@@ -14,7 +14,7 @@ AGU/Water Resources Research layout.
 |---|---|
 | `Hetero_MRI_Modelling_WRR_draft1.docx` | Word draft 1, source of the text and figures |
 | `latex/main.tex` | AGU manuscript (title page, body, tables, figures, bibliography) |
-| `latex/literature.bib` | 25 references transcribed from the draft reference list |
+| `latex/literature.bib` | 27 references: 25 transcribed from the draft list plus the two DaRUS entries |
 | `latex/agujournal2019.cls` | AGU journal class (copied from `20DPNM/review-R2`) |
 | `latex/pictures/` | Figure artwork extracted from the Word draft |
 | `latex/main.pdf` | Rendered manuscript (tracked, so co-authors can read it without a TeX installation) |
@@ -36,7 +36,7 @@ Overleaf as-is.
 |---|---|
 | Pages | 19 |
 | Undefined references / citations | none |
-| Bibliography entries | 25 |
+| Bibliography entries | 27 (25 literature + 2 DaRUS) |
 
 ## Conversion notes (docx → LaTeX)
 
@@ -58,8 +58,19 @@ Overleaf as-is.
   before submission.
 * The key points were written from the abstract because the draft only contained
   three dashes; the authors must confirm them.
-* The AGU front/back matter (key points, acknowledgments, open research, conflict
-  of interest) is present as placeholders.
+* Acknowledgments, Open Research and the Conflict of Interest statement follow
+  the wording of the 20DPNM manuscript (`20DPNM/review-R2`) and cite the DaRUS
+  entries listed below.
+
+## Data and code availability
+
+| Content | Repository |
+|---|---|
+| Experimental data (sand properties, ²³Na calibration, 174-h imaging, mass balance) | DaRUS, [10.18419/DARUS-6478](https://doi.org/10.18419/DARUS-6478) |
+| Numerical model: modified version of the DuMuˣ code archived with Chaudhry et al. (2026) | DaRUS, [10.18419/DARUS-4744](https://doi.org/10.18419/DARUS-4744) |
+
+Both are cited in the *Open Research* section (`\cite{chaudhry2026data}` and
+`\cite{kiemle2025code}`).
 
 ## Open items
 
@@ -73,7 +84,6 @@ Sections that have only a heading and a red note in the draft:
 * 3.6 Regime map of convective redistribution and interdomain coupling
 * 3.7 Joint implications for salt accumulation and limits of interpretation
 * 4 Conclusions — the numerical-results sentence is still missing
-* Acknowledgments, Open Research, Conflict of Interest
 
 Figures still missing artwork (framed placeholders in the PDF):
 

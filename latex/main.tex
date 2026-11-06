@@ -53,6 +53,12 @@
     \centering\color{red}\small [Figure placeholder --- #1]%
   \end{minipage}}}
 
+% Clickable repository link in pdfLaTeX (same definition as in the 20DPNM
+% manuscript, so repository URLs stay clickable without changing the class's
+% citation setup).
+\newcommand{\repositoryurl}[1]{\leavevmode\pdfstartlink attr{/Border [0 0 0]}
+  user{/Subtype /Link /A << /S /URI /URI (#1) >>}\url{#1}\pdfendlink}
+
 % Shorthands for the two imaged nuclei.
 \newcommand{\NaIso}{$^{23}$Na}
 \newcommand{\HIso}{$^{1}$H}
@@ -930,15 +936,29 @@ control the onset and spatial location of salt precipitation.
 %  ACKNOWLEDGMENTS / OPEN RESEARCH
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \acknowledgments
-\authornote{Acknowledgments and funding information were not part of draft1.docx
-and still have to be added.}
+We thank the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation)
+for supporting this work by funding SFB 1313 (Project No.~327154368). Z.~Chen
+acknowledges support from a Humboldt Research Fellowship for Postdoctoral
+Researchers from the Alexander von Humboldt Foundation and from the Open Research
+Fund of the State Key Laboratory of Hydro-Science and Engineering, Tsinghua
+University (Project No.~sklhse-KF-2026-A-04).
 
 \section*{Open Research}
-\authornote{Data and code availability statements still have to be added (AGU
-requires a data availability statement for every published article).}
+The experimental data supporting the results of this study, including the
+properties of the two sands, the \NaIso-MRI calibration, the imaging data of the
+174-hour evaporation experiment and the mass balance, are deposited in DaRUS
+\cite{chaudhry2026data}:
+\repositoryurl{https://doi.org/10.18419/DARUS-6478}.
+
+The numerical model used in this study is a modified version of the
+DuMu$^\mathrm{X}$ code archived in DaRUS by \citeA{kiemle2025code}:
+\repositoryurl{https://doi.org/10.18419/DARUS-4744}. This code was developed for
+the numerical analysis presented in \citeA{chaudhry2026}; the model formulation
+and the modifications made for the heterogeneous packing of this study are
+described in Section~\ref{sec:numerical-model}.
 
 \section*{Conflict of Interest Statement}
-\authornote{To be confirmed by the authors.}
+The authors declare no conflicts of interest relevant to this study.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  REFERENCES
