@@ -1,0 +1,14 @@
+# Keep text sources LF-normalised in the repository so that diffs stay clean
+# across Windows/Overleaf checkouts.
+* text=auto
+*.tex  text eol=lf
+*.bib  text eol=lf
+*.cls  text eol=lf
+*.md   text eol=lf
+
+# Binary assets: never treat as text.
+*.pdf   -text
+*.docx  -text
+*.jpeg  -text
+*.jpg   -text
+*.png   -text
