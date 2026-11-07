@@ -49,6 +49,8 @@ Overleaf as-is.
   which is Table 2 here.
 * The two Word equations (evaporation rate, Na concentration calibration) were
   reconstructed from the embedded Office Math objects.
+* Paragraphs are fully justified (`\justifying` from `ragged2e`), matching the
+  20DPNM manuscript; the AGU class default would otherwise be ragged-right.
 * Obvious typos were corrected (`Shimojimaa` → Shimojima, `ddensity` →
   density, `Bo field` → *B*₀ field).
 * The italic editorial instructions in the draft ("The following text in italic

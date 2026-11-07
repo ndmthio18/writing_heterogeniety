@@ -31,6 +31,11 @@
 \usepackage{booktabs}
 \usepackage{array}
 
+% The AGU class sets ragged-right text by default; the 20DPNM manuscript
+% (20DPNM/review-R2) uses fully justified paragraphs, so do the same here.
+\usepackage{ragged2e}
+\justifying
+
 % Figures are stored in pictures/ next to this file.
 \graphicspath{{pictures/}{./}}
 
@@ -241,6 +246,7 @@ Particle size ranges were provided by the supplier (Quarzwerke Frechen). The
 parameters of the Brooks--Corey model were obtained by fitting to measured water
 retention data.}
 \label{tab:properties}
+\setlength{\tabcolsep}{4pt}% keep the long property labels inside the text width
 \begin{tabular}{lcc}
 \toprule
  & F36 & W3 \\
