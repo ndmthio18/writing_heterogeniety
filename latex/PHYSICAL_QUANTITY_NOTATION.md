@@ -78,10 +78,32 @@ j_{\mathrm{evap}} =
 
 ### 4.1 斜体与正体
 
-- 物理变量和可变索引用数学斜体：\(p,T,t,i,j\)。
-- 描述性文字下标/上标用 \(\mathrm{}\)：\(\mathrm{evap}\)、\(\mathrm{eq}\)、\(\mathrm{sat}\)、\(\mathrm{amb}\)、\(\mathrm{mol}\)、\(\mathrm{diff}\)、\(\mathrm{sol}\)、\(\mathrm{vol}\)。
-- 化学式用正体：\(\mathrm{NaCl}\)、\(\mathrm{Na}\)、\(\mathrm{H_2O}\)、\(\mathrm{N_2}\)。
-- 不直接使用正文斜体单词充当说明性标签。
+#### 使用斜体的情形
+
+- 物理量主符号用数学斜体：\(p,T,t,X,x,D,c,n,S,V\)。
+- 可变的空间、时间或离散索引用斜体：\(i,j,n\)。
+- QSPNM 体系中的单字母相标识和组分标识用斜体：气相 \(g\)、液相 \(w\)、水组分 \(w\)、空气组分 \(a\)。
+- 表示变量的希腊字母保持数学斜体，例如 \(\rho,\delta,\theta,\phi\)。
+- 按 QSPNM 原文，单字母物理标识通常保持斜体，例如 \(q_e\)、\(A_e\)、\(p_c\)、\(D_g^{w,a}\) 和 \(X_{g,i}^{w}\) 中的 \(e,c,g,w,a,i\)。
+
+#### 使用正体的情形
+
+- 描述性单词或缩写用 \(\mathrm{}\)：\(\mathrm{evap}\)、\(\mathrm{eq}\)、\(\mathrm{sat}\)、\(\mathrm{amb}\)、\(\mathrm{mol}\)、\(\mathrm{diff}\)、\(\mathrm{sol}\)、\(\mathrm{vol}\)、\(\mathrm{bulk}\)、\(\mathrm{atm}\)。
+- 化学元素、化学式和同位素元素符号用正体：\(\mathrm{Na}\)、\(\mathrm{NaCl}\)、\(\mathrm{H_2O}\)、\(\mathrm{N_2}\)、\(^{23}\mathrm{Na}\)、\(^{1}\mathrm{H}\)。
+- 数字下标/上标天然为正体，例如 \(B_0\)、\(T_2\)。
+- 单位符号在正文中使用正体，例如 Pa、K、m、s、mol；单位不能写成数学变量斜体。
+- 标准数学函数和算子使用正体，例如 \(\exp\)、\(\ln\)、\(\sin\)。
+
+#### 单字母与多字母标签的判定
+
+本项目跟随 QSPNM 原文，而不是自行扩展另一套字体体系：
+
+- 单字母标识默认按数学量排成斜体：\(q_e\)、\(A_e\)、\(p_c\)、\(t_R\)、\(t_E\)、\(p_b\)、\(S_r\)、\(T_s\)；
+- 相、组分和离散索引等单字母标识也用斜体：\(D_g^{w,a}\)、\(X_{g,i}^{w}\)；
+- 由完整单词缩写而来的多字母说明标签用正体：\(\mathrm{diff}\)、\(\mathrm{amb}\)、\(\mathrm{mol}\)、\(\mathrm{eq}\)、\(\mathrm{sat}\)、\(\mathrm{salt}\)、\(\mathrm{max}\)、\(\mathrm{thr}\)；
+- 化学元素和化学式无论长短均使用正体，例如 \(\mathrm{Na}\)、\(\mathrm{H}\)、\(\mathrm{N_2}\)。
+
+因此，不能把“所有有语义的下标”都机械改为正体；必须先区分 QSPNM 式单字母标识、多字母描述标签和化学符号。
 
 ### 4.2 推荐示例
 
@@ -93,9 +115,15 @@ x_{g,s}^{w,\mathrm{eq}}
 D_g^{w,\mathrm{N_2}}
 p_{\mathrm{sat}}
 p_{\mathrm{atm}}
+t_R
+t_E
+p_b
+S_r
 c_{\mathrm{vol}}^{\mathrm{Na}}
 c_{\mathrm{sol}}^{\mathrm{Na}}
 n^{\mathrm{Na}}
+{}^{23}\mathrm{Na}
+\mathrm{Na_2SO_4}
 \rho_{\mathrm{sol}}
 A_{\mathrm{evap}}
 ~~~
@@ -108,6 +136,11 @@ X_{w,s}^{\mathrm{eq}}   % 组分错误地放在下标，且未标明气相
 x_{w,s}^{\mathrm{eq}}   % 组分错误地放在下标，且未标明气相
 D_{w,g}                 % 组分与相的层级颠倒
 p_{sat}                 % sat 应为正体
+\mathrm{g}              % QSPNM 中单字母相标识 g 应为斜体
+X_{\mathrm{g},i}^{w}    % 不应把单字母相标识机械改为正体
+c_{\mathrm{vol}}^{\mathit{Na}} % 化学元素 Na 不应使用斜体
+c_{\mathrm{vol}}^{Na}   % 化学元素 Na 应为正体
+N_2                     % 化学式应整体使用正体
 c_{NaVolume}            % 化学组分和描述词未分层
 X_{wSurfaceEquilibrium} % 信息应通过分层上下标表达
 ~~~
@@ -164,4 +197,5 @@ rg -n "_[{]?(sat|eq|amb|diff|mol)" main.tex
 - 按 QSPNM 论文将组分放上标、相和位置放下标：\(X_{g,s}^{w,\mathrm{eq}}\)、\(X_{g,\mathrm{amb}}^{w}\)、\(x_{g,s}^{w,\mathrm{eq}}\)。
 - 水蒸气--氮气二元扩散系数写成 \(D_g^{w,\mathrm{N_2}}\)。
 - Na 相关物质的量和浓度写成 \(n^{\mathrm{Na}}\)、\(c_{\mathrm{vol}}^{\mathrm{Na}}\) 和 \(c_{\mathrm{sol}}^{\mathrm{Na}}\)。
+- 变量、相和可变索引使用斜体；描述性标签、化学式、元素符号和单位使用正体。
 
