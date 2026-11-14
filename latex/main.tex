@@ -383,12 +383,12 @@ protocols shown in Table~\ref{tab:imaging}. The average voxel intensity of the
 calibration samples was plotted against the Na volume concentration using the
 relationship \cite{perelman2020}:
 \begin{equation}
-c_{\mathrm{Na,vol}} = \frac{n_{\mathrm{Na}}}{V_{\mathrm{bulk}}}
-= c_{\mathrm{Na,sol}}\,\theta_{\mathrm{vol}},
+c_{\mathrm{vol}}^{\mathrm{Na}} = \frac{n^{\mathrm{Na}}}{V_{\mathrm{bulk}}}
+= c_{\mathrm{sol}}^{\mathrm{Na}}\,\theta_{\mathrm{vol}},
 \label{eq:calibration}
 \end{equation}
-where $n_{\mathrm{Na}}$ is the number of moles of Na, $V_{\mathrm{bulk}}$ is the
-bulk volume, $c_{\mathrm{Na,sol}}$ is the solution concentration and
+where $n^{\mathrm{Na}}$ is the number of moles of Na, $V_{\mathrm{bulk}}$ is the
+bulk volume, $c_{\mathrm{sol}}^{\mathrm{Na}}$ is the solution concentration and
 $\theta_{\mathrm{vol}}$ is the volumetric water content. It was then fitted with
 a linear function for F36 and a polynomial function for W3.
 
@@ -466,24 +466,26 @@ equilibrium water-vapor concentration at the porous-medium surface and that in
 the surrounding gas:
 \begin{equation}
 j_{\mathrm{evap}} =
-\frac{\rho_{g,f}D_{w,g}}{\delta_g}
-\left(X_{w,s}^{\mathrm{eq}}-X_{w,\infty}\right),
+\frac{\rho_{g,f}D_g^{w,\mathrm{N_2}}}{\delta_g}
+\left(X_{g,s}^{w,\mathrm{eq}}-X_{g,\mathrm{amb}}^{w}\right),
 \label{eq:gas-film-flux}
 \end{equation}
-where $\rho_{g,f}$ and $D_{w,g}$ are the gas density and water-vapor diffusion
+where $\rho_{g,f}$ and $D_g^{w,\mathrm{N_2}}$ are the gas density and
+water-vapor--nitrogen binary diffusion
 coefficient evaluated at representative gas-film conditions, $\delta_g$ is the
-effective gas-film thickness, and $X_{w,s}^{\mathrm{eq}}$ and $X_{w,\infty}$ are
-the equilibrium surface and ambient water-vapor mass fractions, respectively. The
+effective gas-film thickness, and $X_{g,s}^{w,\mathrm{eq}}$ and
+$X_{g,\mathrm{amb}}^{w}$ are the equilibrium surface and ambient water-vapor
+mass fractions, respectively. The
 equilibrium water-vapor mole fraction at the surface was determined from
 \begin{equation}
-x_{w,s}^{\mathrm{eq}} =
+x_{g,s}^{w,\mathrm{eq}} =
 \frac{a_w(c_l,T_s)p_{\mathrm{sat}}(T_s)}{p_{\mathrm{atm}}},
 \label{eq:surface-vapor-equilibrium}
 \end{equation}
 where $a_w$ is the water activity of the saline solution,
 $p_{\mathrm{sat}}$ is the saturation vapor pressure of pure water, and $T_s$
 is the local surface temperature. The corresponding equilibrium mass fraction
-$X_{w,s}^{\mathrm{eq}}$ was obtained from $x_{w,s}^{\mathrm{eq}}$. Water
+$X_{g,s}^{w,\mathrm{eq}}$ was obtained from $x_{g,s}^{w,\mathrm{eq}}$. Water
 activity was evaluated using a Pitzer-based osmotic-coefficient approximation
 for NaCl solutions. A gas-side relative humidity of zero was prescribed to
 approximate the dry nitrogen flow, and the effective film thickness was
@@ -667,7 +669,7 @@ intensity versus Na volume concentration); artwork not included in
 draft1.docx}
 \caption{Calibration results for F36 and W3 using an identical imaging protocol
 where average voxel signal intensity ($S_r$) is related to the volume
-concentration of sodium $c_{\mathrm{Na,vol}}$ obtained with
+concentration of sodium $c_{\mathrm{vol}}^{\mathrm{Na}}$ obtained with
 Equation~\ref{eq:calibration}. The dotted lines are a linear and a second-order
 polynomial fit with the parameters shown in the plot. Error bars represent one
 standard deviation of voxel intensity after the use of a 1.5~pixel median

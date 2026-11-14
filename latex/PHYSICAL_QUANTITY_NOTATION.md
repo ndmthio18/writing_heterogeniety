@@ -15,9 +15,9 @@
 
 | 物理量 | 统一符号 | 示例 | 说明 |
 |---|---:|---|---|
-| 质量分数 | \(X\) | \(X_{w,s}^{\mathrm{eq}}\)、\(X_{w,\infty}\) | 本项目规则；无量纲 |
-| 摩尔分数 | \(x\) | \(x_{w,s}^{\mathrm{eq}}\) | 与参考论文一致；无量纲 |
-| 物质的量浓度 | \(c\) | \(c_{\mathrm{Na,sol}}\) | 必须给出单位，如 mol L\(^{-1}\) 或 mol m\(^{-3}\) |
+| 质量分数 | \(X\) | \(X_{g,s}^{w,\mathrm{eq}}\)、\(X_{g,\mathrm{amb}}^{w}\) | 本项目规则；无量纲 |
+| 摩尔分数 | \(x\) | \(x_{g,s}^{w,\mathrm{eq}}\) | 与参考论文一致；无量纲 |
+| 物质的量浓度 | \(c\) | \(c_{\mathrm{sol}}^{\mathrm{Na}}\) | 必须给出单位，如 mol L\(^{-1}\) 或 mol m\(^{-3}\) |
 | 饱和度 | \(S\) | \(S_{w,i}\) | 相占可用孔隙体积的比例；无量纲 |
 | 体积分数 | \(\phi\) | \(\phi_{s,i}\) | 例如沉淀盐体积分数；无量纲 |
 
@@ -35,12 +35,12 @@
 ~~~latex
 \begin{equation}
 j_{\mathrm{evap}} =
-\frac{\rho_{g,f}D_{w,g}}{\delta_g}
-\left(X_{w,s}^{\mathrm{eq}}-X_{w,\infty}\right).
+\frac{\rho_{g,f}D_g^{w,\mathrm{N_2}}}{\delta_g}
+\left(X_{g,s}^{w,\mathrm{eq}}-X_{g,\mathrm{amb}}^{w}\right).
 \end{equation}
 ~~~
 
-其中，\(X_{w,s}^{\mathrm{eq}}\) 和 \(X_{w,\infty}\) 分别为界面平衡水蒸气质量分数和环境水蒸气质量分数。对应的界面水蒸气摩尔分数写成 \(x_{w,s}^{\mathrm{eq}}\)。本稿不引入或解释面积修正因子 \(\chi_A\)。如果未来模型确实重新使用该因子，必须先给出其定义、数值来源、量纲及其对面积/通量定义的影响，不能只把它作为未解释系数放入方程。
+其中，\(X_{g,s}^{w,\mathrm{eq}}\) 和 \(X_{g,\mathrm{amb}}^{w}\) 分别为界面平衡水蒸气质量分数和环境水蒸气质量分数；\(D_g^{w,\mathrm{N_2}}\) 为气相中水蒸气--氮气二元扩散系数。对应的界面水蒸气摩尔分数写成 \(x_{g,s}^{w,\mathrm{eq}}\)。本稿不引入或解释面积修正因子 \(\chi_A\)。如果未来模型确实重新使用该因子，必须先给出其定义、数值来源、量纲及其对面积/通量定义的影响，不能只把它作为未解释系数放入方程。
 
 ## 3. 上下标层级
 
@@ -62,15 +62,17 @@ j_{\mathrm{evap}} =
 4. diff、mol、amb、sat、max、eq 等描述性标签用正体；
 5. \(i,j,n\) 等可变索引用斜体。
 
-### 3.2 本项目当前约定
+### 3.2 本项目采用的 QSPNM 层级
 
-当前稿件已经使用“组分/对象 + 位置或状态”的下标结构，如 \(X_{w,s}^{\mathrm{eq}}\)。为避免只改一节而造成全稿上下标体系混杂，本轮保留该结构，并执行以下规则：
+本项目直接采用参考论文的层级，不再保留“组分放在第一个下标”的旧写法：
 
-- 第一个下标说明组分或主要对象：\(w\)、\(\mathrm{Na}\)、\(\mathrm{NaCl}\)、\(g\)、\(l\)；
-- 后续下标说明位置、环境或评价条件：\(s\)（surface）、\(\infty\)（ambient/far field）、\(f\)（film）、\(i,j\)（离散单元）；
-- 上标优先用于状态或限定：\(\mathrm{eq}\)、\(\mathrm{sat}\)、\(\mathrm{sol}\)、\(n+1\)；
-- 逗号用于分隔不同语义层级，例如 \(\rho_{g,f}\)，不要把多个标签连成难以辨认的字符串；
-- 若后续全稿改用参考论文的“组分上标、相下标”体系，应一次性全局审计和替换，不能在局部方程中混用两套体系。
+- **组分放上标**：\(w\)、\(\mathrm{Na}\)、\(\mathrm{NaCl}\)、\(\mathrm{salt}\)；
+- **相放在第一个下标**：\(g\) 表示气相，\(w\) 表示液相（水相）；
+- **位置或离散索引放在后续下标**：\(s\)（surface）、\(\mathrm{amb}\)（ambient）、\(i,j\)（孔体或连接单元）；
+- **状态或过程限定与其语义层同列，并使用正体**：\(\mathrm{eq}\)、\(\mathrm{sat}\)、\(\mathrm{max}\)、\(\mathrm{diff}\)、\(\mathrm{mol}\)；
+- 逗号用于分隔同一上下标层中的不同角色，例如 \(X_{g,s}^{w,\mathrm{eq}}\)；
+- 无相或位置索引时，只保留必要层级，例如总 Na 物质的量写成 \(n^{\mathrm{Na}}\)，Na 溶液浓度写成 \(c_{\mathrm{sol}}^{\mathrm{Na}}\)；
+- 同一稿件不得混用 \(X_{w,s}^{\mathrm{eq}}\) 与 \(X_{g,s}^{w,\mathrm{eq}}\) 这两套结构。
 
 ## 4. 字体与 LaTeX 写法
 
@@ -85,13 +87,15 @@ j_{\mathrm{evap}} =
 
 ~~~latex
 j_{\mathrm{evap}}
-X_{w,s}^{\mathrm{eq}}
-X_{w,\infty}
-x_{w,s}^{\mathrm{eq}}
+X_{g,s}^{w,\mathrm{eq}}
+X_{g,\mathrm{amb}}^{w}
+x_{g,s}^{w,\mathrm{eq}}
+D_g^{w,\mathrm{N_2}}
 p_{\mathrm{sat}}
 p_{\mathrm{atm}}
-c_{\mathrm{Na,vol}}
-c_{\mathrm{Na,sol}}
+c_{\mathrm{vol}}^{\mathrm{Na}}
+c_{\mathrm{sol}}^{\mathrm{Na}}
+n^{\mathrm{Na}}
 \rho_{\mathrm{sol}}
 A_{\mathrm{evap}}
 ~~~
@@ -100,7 +104,9 @@ A_{\mathrm{evap}}
 
 ~~~latex
 Y_{w,s}                 % 质量分数不使用 Y
-x_{w,s}                 % 若实际指质量分数，则错误
+X_{w,s}^{\mathrm{eq}}   % 组分错误地放在下标，且未标明气相
+x_{w,s}^{\mathrm{eq}}   % 组分错误地放在下标，且未标明气相
+D_{w,g}                 % 组分与相的层级颠倒
 p_{sat}                 % sat 应为正体
 c_{NaVolume}            % 化学组分和描述词未分层
 X_{wSurfaceEquilibrium} % 信息应通过分层上下标表达
@@ -113,7 +119,7 @@ X_{wSurfaceEquilibrium} % 信息应通过分层上下标表达
 | 蒸发质量通量 | \(j_{\mathrm{evap}}\) | kg m\(^{-2}\) s\(^{-1}\) |
 | 气体密度 | \(\rho_g\) 或带条件的 \(\rho_{g,f}\) | kg m\(^{-3}\) |
 | 摩尔密度 | \(\rho_{\mathrm{mol},g}\) | mol m\(^{-3}\) |
-| 扩散系数 | \(D_{w,g}\) | m\(^2\) s\(^{-1}\) |
+| 扩散系数 | \(D_g^{w,\mathrm{N_2}}\) | m\(^2\) s\(^{-1}\) |
 | 边界层厚度 | \(\delta_g\) | m |
 | 压力 | \(p\) | Pa |
 | 温度 | \(T\) | K；若用摄氏温度需显式标单位 |
@@ -154,6 +160,8 @@ rg -n "_[{]?(sat|eq|amb|diff|mol)" main.tex
 ## 7. 本轮已落实的决定
 
 - 从蒸发通量方程及其解释中移除 \(\chi_A\)。
-- 将水蒸气质量分数从 \(Y_{w,s}^{\mathrm{eq}}\)、\(Y_{w,\infty}\) 改为 \(X_{w,s}^{\mathrm{eq}}\)、\(X_{w,\infty}\)。
-- 保留小写 \(x_{w,s}^{\mathrm{eq}}\) 表示水蒸气摩尔分数。
+- 质量分数统一用大写 \(X\)，摩尔分数统一用小写 \(x\)。
+- 按 QSPNM 论文将组分放上标、相和位置放下标：\(X_{g,s}^{w,\mathrm{eq}}\)、\(X_{g,\mathrm{amb}}^{w}\)、\(x_{g,s}^{w,\mathrm{eq}}\)。
+- 水蒸气--氮气二元扩散系数写成 \(D_g^{w,\mathrm{N_2}}\)。
+- Na 相关物质的量和浓度写成 \(n^{\mathrm{Na}}\)、\(c_{\mathrm{vol}}^{\mathrm{Na}}\) 和 \(c_{\mathrm{sol}}^{\mathrm{Na}}\)。
 
