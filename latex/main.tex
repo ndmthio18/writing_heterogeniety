@@ -410,28 +410,29 @@ in this region.
 
 \subsubsection{Model formulation and computational domain}
 
-The numerical simulations were performed using a three-dimensional,
-non-isothermal, compositional multiphase flow model implemented in
-DuMu$^\mathrm{X}$ \cite{koch2021}. The model builds upon the framework of
-\citeA{kiemle2025code} and \citeA{chaudhry2026}, which describes
-evaporation-driven solute redistribution in saturated porous media. It solves
-mass conservation for water, air and NaCl together with energy conservation,
-accounting for multiphase Darcy flow, component diffusion and phase equilibrium.
-The dependence of liquid density on salt concentration allows gravitational
-instabilities and the associated downward redistribution of saline water to
-develop. Capillary pressure and relative permeability are described by the
-Brooks--Corey model, while the reduction in water activity caused by dissolved
-NaCl is included in the liquid--gas equilibrium formulation.
+The numerical simulations were carried out using the open-source simulator
+DuMu$^{\mathrm{X}}$ \cite{koch2021}. We employed a non-isothermal, two-phase,
+three-component model that builds upon the formulation used by
+\citeA{chaudhry2026} to describe evaporation-driven solute transport in
+saturated porous media. The model considers liquid and gas phases and accounts
+for mass conservation of water, air and NaCl, together with energy conservation.
+Fluid flow is described by the multiphase extension of Darcy's law, while
+component transport includes advective and diffusive contributions. The
+dependence of liquid density and viscosity on salt concentration is taken into
+account, allowing gravitational instabilities to develop as the pore water
+becomes enriched in salt. Capillary pressure and relative permeability are
+described using the Brooks--Corey relationships. The governing equations and
+constitutive relations are provided in Supporting Information Section~S1.
 
-In contrast to the previous two-dimensional simulations of homogeneous sand
-columns \cite{chaudhry2026}, the present model explicitly represents the
-three-dimensional heterogeneous experimental configuration
-(Figure~\ref{fig:numerical-model}). The computational domain consists of a cylindrical
-sand packing with a diameter of 50~mm and a height of 40~mm, divided into two
-semicircular regions occupied by F36 and W3. The two materials are hydraulically
-connected across a sharp vertical interface, with their respective hydraulic
-properties assigned independently. An underlying porous filter is also
-explicitly included in the computational domain.
+The numerical domain was extended from the two-dimensional homogeneous
+configurations of \citeA{chaudhry2026} to the three-dimensional heterogeneous
+packing used in the present experiments (Figure~\ref{fig:numerical-model}). It
+consists of a cylindrical sand column with a diameter of 50~mm and a height of
+40~mm, divided into two semicircular regions containing F36 and W3 sand. The
+material properties are assigned separately to the two domains, which are in
+direct hydraulic contact across a vertical interface. A porous filter beneath
+the sand packing is explicitly represented to account for the hydraulic
+connection with the underlying saline-water reservoir.
 
 \begin{figure}[t]
 \centering
@@ -445,100 +446,93 @@ central inlet boundary with a nominal diameter of 4~mm.}
 \label{fig:numerical-model}
 \end{figure}
 
-NaCl is assumed to precipitate at local equilibrium once the solubility limit is
-reached. However, the reference porosity and intrinsic permeability are kept
-constant, and changes in pore geometry and hydraulic properties due to
-precipitation are neglected. The governing equations and constitutive
-relationships are summarized in Supporting Information Section~S1. The
-experimental representation of the lower saline-water supply and upper
-evaporative boundary is described in the following sections.
-
 \subsubsection{Evaporation and equilibrium salt precipitation}
 
-Evaporation at the upper surface was represented using a local gas-film
-mass-transfer formulation \cite{mosthaf2014,vanderborght2017,fetzer2017} to
-reproduce the sustained evaporation--wicking
-conditions of the experiment. Dry nitrogen was supplied above the sample,
-while liquid water was continuously replenished from the underlying
-saline-water reservoir. Rather than prescribing a uniform evaporation rate,
-the local evaporative water flux was calculated from the difference between the
-equilibrium water-vapor concentration at the porous-medium surface and that in
-the surrounding gas:
+Evaporation at the upper boundary was described using a gas-film mass-transfer
+approach \cite{mosthaf2014,vanderborght2017,fetzer2017}. Instead of prescribing a
+constant evaporative flux, the water mass flux was determined from the
+difference between the equilibrium water-vapor mass fraction at the
+porous-medium surface and that in the ambient gas:
 \begin{equation}
 j_{\mathrm{evap}} =
 \frac{\rho_{g,f}D_g^{w,\mathrm{N_2}}}{\delta_g}
 \left(X_{g,s}^{w,\mathrm{eq}}-X_{g,\mathrm{amb}}^{w}\right),
 \label{eq:gas-film-flux}
 \end{equation}
-where $\rho_{g,f}$ and $D_g^{w,\mathrm{N_2}}$ are the gas density and
-water-vapor--nitrogen binary diffusion
-coefficient evaluated at representative gas-film conditions, $\delta_g$ is the
-effective gas-film thickness, and $X_{g,s}^{w,\mathrm{eq}}$ and
-$X_{g,\mathrm{amb}}^{w}$ are the equilibrium surface and ambient water-vapor
-mass fractions, respectively. The
-equilibrium water-vapor mole fraction at the surface was determined from
+where $\rho_{g,f}$ and $D_g^{w,\mathrm{N_2}}$ denote the gas density and the
+water-vapor--nitrogen binary diffusion coefficient evaluated at representative
+gas-film conditions, respectively. The parameter $\delta_g$ is the effective
+gas-film thickness. The equilibrium water-vapor composition was calculated from
+the local surface temperature and the water activity of the saline solution:
 \begin{equation}
 x_{g,s}^{w,\mathrm{eq}} =
-\frac{a_w(c_l,T_s)p_{\mathrm{sat}}(T_s)}{p_{\mathrm{atm}}},
+\frac{a_w p_{\mathrm{sat}}(T_s)}{p_{\mathrm{atm}}},
 \label{eq:surface-vapor-equilibrium}
 \end{equation}
-where $a_w$ is the water activity of the saline solution,
-$p_{\mathrm{sat}}$ is the saturation vapor pressure of pure water, and $T_s$
-is the local surface temperature. The corresponding equilibrium mass fraction
-$X_{g,s}^{w,\mathrm{eq}}$ was obtained from $x_{g,s}^{w,\mathrm{eq}}$. Water
-activity was evaluated using a Pitzer-based osmotic-coefficient approximation
-for NaCl solutions. A gas-side relative humidity of zero was prescribed to
-approximate the dry nitrogen flow, and the effective film thickness was
-determined using the first 24~h of reservoir mass-loss measurements
-(Section~\ref{sec:model-calibration}). The non-isothermal formulation
-additionally accounts for enthalpy transport associated with evaporation and
-heat exchange across the gas film.
+where $a_w$ is the water activity, $p_{\mathrm{sat}}$ is the saturation vapor
+pressure of pure water, $T_s$ is the local surface temperature and
+$p_{\mathrm{atm}}$ is the atmospheric pressure. The equilibrium vapor mass
+fraction $X_{g,s}^{w,\mathrm{eq}}$ in Equation~\ref{eq:gas-film-flux} was
+obtained from the corresponding mole fraction
+$x_{g,s}^{w,\mathrm{eq}}$ in
+Equation~\ref{eq:surface-vapor-equilibrium}.
 
-As evaporation removes water while retaining nonvolatile NaCl within the porous
-medium, dissolved salt accumulates near the evaporating surface. The resulting
-increase in salinity reduces water activity and therefore the local
-vapor-pressure driving force. When the dissolved NaCl concentration reaches the
-prescribed solubility limit, excess salt is transferred to a solid inventory
-through a local equilibrium precipitation formulation. The solubility limit was
-specified as a NaCl mass fraction of 0.26. Dissolved and precipitated NaCl are
-included in the total salt conservation equation, allowing precipitation to
-modify the dissolved concentration and, consequently, the evaporation rate
-through its effect on water activity.
+The water activity of the NaCl solution was described using a Pitzer-based
+osmotic-coefficient formulation. The resulting reduction in equilibrium vapor
+pressure with increasing salinity was therefore directly incorporated into the
+evaporative boundary condition. A relative humidity of zero was prescribed on
+the gas side to represent the dry nitrogen flow used in the experiment. The
+effective gas-film thickness was calibrated against the reservoir mass-loss
+measurements during the first 24~h of evaporation
+(Section~\ref{sec:model-calibration}). Heat exchange associated with evaporation
+was accounted for through the non-isothermal formulation, including enthalpy
+transport and conductive heat transfer across the gas film.
 
-The experiments provided evidence consistent with the development of a moist
-efflorescent salt structure above the W3 surface, as indicated by the combined
-\NaIso{}- and \HIso{}-MRI observations. In the numerical model, however,
-precipitation is represented as a local solid-salt inventory within the fixed
-computational domain. The formation and growth of an external porous salt crust,
-including changes in evaporating surface area, hydraulic properties, and
-additional vapor-transport resistance, are not explicitly resolved. Thus, the
-model captures the coupling between evaporation, dissolved-salt enrichment, and
-equilibrium precipitation, but not the morphological and transport feedbacks
-associated with the subsequent growth of efflorescence.
+Since NaCl is nonvolatile, evaporation removes water from the porous medium while
+dissolved salt is retained. Salt accumulation increases the liquid-phase
+concentration until the solubility limit is reached, at which point NaCl
+precipitation is assumed to occur at local chemical equilibrium. The solubility
+limit was specified by a NaCl mass fraction of 0.26. The dissolved and
+precipitated salt inventories were included in the total NaCl mass balance,
+ensuring conservation during precipitation and dissolution. Precipitation
+modifies the dissolved salt concentration and thereby affects the local water
+activity and evaporative driving force.
+
+The MRI observations indicate the development of a moist salt structure above
+the W3 surface during the experiment, consistent with efflorescence formation.
+In the numerical model, however, precipitated salt is represented by a local
+solid inventory within the fixed computational domain. Changes in pore geometry,
+porosity and intrinsic permeability due to precipitation are neglected, and the
+growth of an external porous salt crust is not explicitly resolved. Accordingly,
+the model accounts for the thermodynamic coupling between evaporation and salt
+precipitation but does not include additional mass-transfer resistance or
+changes in evaporating surface area associated with efflorescence growth.
 
 \subsubsection{Bottom boundary and saline-water supply}
 
-The bottom boundary was designed to represent continuous hydraulic connection
-between the sand packing and the underlying saline-water reservoir. Rather than
-prescribing a uniform upward water flux at the bottom of each material, the
-model explicitly represents the 4.5~mm thick porous filter and its connection to
-the reservoir through a central inlet with a nominal diameter of 4~mm. The
-filter permeability was set to $5.30\times10^{-12}$~m$^2$, while the reservoir
-water level was maintained 20~mm above the sand--filter interface.
+To represent the continuous supply of saline water during evaporation, the
+bottom boundary was coupled to an external reservoir through an explicitly
+resolved porous filter. The filter has a thickness of 4.5~mm and an intrinsic
+permeability of $5.30\times10^{-12}$~m$^2$. The connection to the reservoir is
+represented by a centrally located circular inlet with a nominal diameter of
+4~mm (Figure~\ref{fig:numerical-model}). The reservoir water level was
+maintained 20~mm above the sand--filter interface, and the reservoir
+concentration and temperature were prescribed as 1~mol~L$^{-1}$ NaCl and
+293.15~K, respectively.
 
-The liquid flux through the inlet was calculated from the hydraulic-potential
+Liquid exchange at the inlet was determined from the hydraulic-potential
 difference between the reservoir and the adjacent filter, accounting for liquid
-mobility and the effective inlet area. The reservoir concentration was
-maintained at 1~mol~L$^{-1}$ NaCl. Both inflow from the reservoir and return flow
-into the reservoir were permitted, with component and enthalpy transport
-evaluated according to the upstream fluid state.
+mobility and the effective inlet area. The boundary formulation permits both
+inflow from the reservoir and return flow toward the reservoir. Component and
+energy transport associated with this exchange were evaluated using the
+properties of the upstream fluid.
 
-This representation allows the distribution of water and salt supply between
-F36 and W3 to emerge from the coupled pressure and concentration fields rather
-than being prescribed independently for the two materials. In particular, the
-shared filter provides an additional hydraulic connection beneath the vertical
-sand interface, which is retained when assessing the contribution of direct
-interdomain exchange.
+The liquid and salt fluxes entering F36 and W3 were therefore not prescribed
+independently but resulted from the coupled flow and transport equations. The
+shared porous filter also provides a hydraulic connection between the two
+materials beneath the sand packing. Explicit representation of this connection
+allows changes in the partitioning of bottom water and salt supply to be
+distinguished from direct transport across the vertical material interface.
 
 \subsection{Model calibration and validation} \label{sec:model-calibration}
 
