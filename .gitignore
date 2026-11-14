@@ -47,8 +47,4 @@ __latexindent_temp.tex
 .DS_Store
 Thumbs.db
 
-# Note: latex/main.pdf is the rendered manuscript and is deliberately tracked
-# (it is a deliverable, not an intermediate file). To stop tracking it:
-#   git rm --cached latex/main.pdf
-# and un-comment the next line.
-# latex/main.pdf
+# PDF deliverables and reference papers are deliberately tracked.
