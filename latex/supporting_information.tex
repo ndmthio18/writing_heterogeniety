@@ -1,0 +1,649 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Supporting Information for the WRR manuscript
+% Compile main.tex first so that xr can import its labels.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[draft,wrr]{agutexSI2019}
+
+\ExplSyntaxOn
+\msg_redirect_name:nnn { mark } { infinite-shrinkage } { none }
+\ExplSyntaxOff
+
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{lineno}
+\usepackage{xcolor}
+\usepackage{xr}
+\setkeys{Gin}{draft=false}
+\externaldocument{main}
+
+\renewcommand{\theequation}{S\arabic{equation}}
+\newcounter{sitext}
+\renewcommand{\thesitext}{S\arabic{sitext}}
+\newcommand{\sitext}[1]{%
+  \refstepcounter{sitext}%
+  \par\medskip\noindent\textbf{Text \thesitext. #1}\par\medskip}
+\newcommand{\sisub}[1]{\par\medskip\noindent\textbf{#1}\par\nobreak\smallskip}
+\newcommand{\verify}[1]{%
+  \par\smallskip\noindent\textcolor{red}{\textbf{Author query---}#1}\par\smallskip}
+\newcommand{\NaIso}{\(^{23}\mathrm{Na}\)}
+\newcommand{\HIso}{\(^{1}\mathrm{H}\)}
+\linenumbers
+
+\begin{document}
+\title{Supporting Information for: Evaporation-Driven Solute Redistribution
+in a Macroscopically Heterogeneous Porous Medium With a Vertical Textural
+Interface: MRI Observations and Numerical Analysis}
+
+\makeatletter
+\def\@oddfoot{}
+\def\@evenfoot{}
+\makeatother
+
+\authors{M. A. Chaudhry\affil{2}, Z. Chen\affil{2}\thanks{Corresponding author:
+zhixin.chen@iws.uni-stuttgart.de}, A. Pohlmeier\affil{1}, R. Helmig\affil{2},
+and J. A. Huisman\affil{1}}
+
+\affiliation{1}{Agrosphere Institute (IBG 3), Forschungszentrum J\"ulich GmbH,
+52428 J\"ulich, Germany.}
+\affiliation{2}{Institute for Modeling Hydraulic and Environmental Systems
+(IWS), University of Stuttgart, 70569 Stuttgart, Germany.}
+
+\begin{article}
+\footskip=12pt
+
+\noindent\textbf{Contents of this file}
+\begin{enumerate}
+\item Texts S1--S5
+\item Tables S1--S4
+\end{enumerate}
+
+\noindent\textbf{Introduction}
+
+This Supporting Information provides the equations, constitutive assumptions,
+boundary conditions, imaging details, comparison quantities, and numerical
+checks that complement the main article. The organization follows the
+Supporting Information of the related dynamic pore-network study, but the
+equations below describe the continuum DuMu$^{\mathrm{X}}$ model used here; no
+pore-throat invasion or pore-network upscaling relations are transferred.
+Symbols follow the convention used in the main article: component or species
+labels are superscripts, phase and location labels are subscripts, mass
+fractions are denoted by uppercase $X$, and mole fractions by lowercase $x$.
+
+Red author queries mark information that is not yet supported consistently by
+the manuscript and the archived model provenance. They are not part of the
+scientific claims and must be resolved before submission.
+
+\sitext{Governing equations and primary variables}\label{app:governing}
+
+The porous medium contains a wetting liquid phase $w$ and a gas phase $g$.
+The mobile components are water ($w$), the gas carrier ($\mathrm{N_2}$ in the
+experiment and the air component in the DuMu$^{\mathrm{X}}$ property package),
+and dissolved NaCl. Local thermal equilibrium is assumed, so all phases and the
+solid matrix share one temperature $T$. For component
+$\kappa\in\{w,\mathrm{N_2},\mathrm{NaCl}\}$, the molar balance is
+\begin{equation}
+\frac{\partial}{\partial t}
+\left[
+  \phi\sum_{\alpha\in\{w,g\}}
+  S_\alpha\rho_{\mathrm{mol},\alpha}x_\alpha^\kappa
+  + c_{\mathrm{solid}}^\kappa
+\right]
++\boldsymbol{\nabla}\!\cdot
+\left[
+  \sum_{\alpha\in\{w,g\}}
+  \left(
+  \rho_{\mathrm{mol},\alpha}x_\alpha^\kappa\boldsymbol{v}_\alpha
+  +\boldsymbol{J}_\alpha^\kappa
+  \right)
+\right]
+=q^\kappa,
+\label{eq:si-component-balance}
+\end{equation}
+where $\phi$ is porosity, $S_\alpha$ is phase saturation,
+$\rho_{\mathrm{mol},\alpha}$ is phase molar density,
+$\boldsymbol{v}_\alpha$ is Darcy velocity,
+$\boldsymbol{J}_\alpha^\kappa$ is the diffusive molar flux, and $q^\kappa$ is
+an external source per bulk volume. The immobile storage term is zero for water
+and the carrier gas. For NaCl it is
+$c_{\mathrm{solid}}^{\mathrm{NaCl}}=
+\phi_s\rho_{\mathrm{mol},s}^{\mathrm{NaCl}}$, where $\phi_s$ is the
+precipitated-salt volume fraction per bulk volume. Precipitation therefore
+transfers NaCl between dissolved and solid inventories without creating or
+removing total NaCl.
+
+Phase velocities are calculated with the multiphase extension of Darcy's law,
+\begin{equation}
+\boldsymbol{v}_\alpha
+=-\frac{K k_{r,\alpha}}{\mu_\alpha}
+\left(\boldsymbol{\nabla}p_\alpha-\rho_\alpha\boldsymbol{g}\right),
+\label{eq:si-darcy}
+\end{equation}
+where $K$ is intrinsic permeability, $k_{r,\alpha}$ is relative permeability,
+$\mu_\alpha$ is dynamic viscosity, $p_\alpha$ is phase pressure,
+$\rho_\alpha$ is mass density, and $\boldsymbol{g}$ is gravitational
+acceleration. Molecular diffusion is represented by the DuMu$^{\mathrm{X}}$
+Fickian closure. In compact form,
+\begin{equation}
+\boldsymbol{J}_\alpha^\kappa
+=-\phi S_\alpha\rho_{\mathrm{mol},\alpha}
+D_{\alpha,\mathrm{eff}}^\kappa
+\boldsymbol{\nabla}x_\alpha^\kappa,
+\qquad
+\sum_\kappa\boldsymbol{J}_\alpha^\kappa=\boldsymbol{0},
+\label{eq:si-diffusion}
+\end{equation}
+where $D_{\alpha,\mathrm{eff}}^\kappa$ includes the porous-medium reduction of
+the corresponding binary diffusion coefficient. The second relation enforces
+the reference-component constraint; Equation~\ref{eq:si-diffusion} is therefore
+not an additional independent flux law for every component.
+
+The non-isothermal energy balance is
+\begin{equation}
+\frac{\partial u_{\mathrm{eff}}}{\partial t}
++\boldsymbol{\nabla}\!\cdot
+\left[
+\sum_{\alpha\in\{w,g\}}\rho_\alpha h_\alpha\boldsymbol{v}_\alpha
++\sum_{\alpha\in\{w,g\}}\sum_\kappa
+h_\alpha^\kappa\boldsymbol{J}_\alpha^\kappa
+-\lambda_{\mathrm{eff}}\boldsymbol{\nabla}T
+\right]=q^{\mathrm{E}},
+\label{eq:si-energy}
+\end{equation}
+where $u_{\mathrm{eff}}$ is the bulk internal-energy density,
+$h_\alpha$ and $h_\alpha^\kappa$ are phase and component specific
+enthalpies, $\lambda_{\mathrm{eff}}$ is effective thermal conductivity, and
+$q^{\mathrm{E}}$ is an energy source. Advective enthalpy, diffusive enthalpy,
+and heat conduction are retained. A separate crystallization-enthalpy source is
+not imposed.
+
+The finite-volume discretization uses the same conservative face flux for the
+two materials at their vertical interface. Thus, interdomain exchange is an
+outcome of the coupled pressure, composition, and temperature fields rather
+than a prescribed transfer coefficient.
+
+\sitext{Constitutive relations and salt equilibrium}\label{app:closures}
+
+The saturations and capillary pressure satisfy
+\begin{equation}
+S_w+S_g=1,
+\qquad
+p_c=p_g-p_w.
+\label{eq:si-phase-closure}
+\end{equation}
+For each porous material, the Brooks--Corey effective wetting saturation is
+\begin{equation}
+S_{w,e}=\frac{S_w-S_{w,r}}{1-S_{w,r}-S_{g,r}},
+\label{eq:si-effective-saturation}
+\end{equation}
+and the implemented capillary pressure and relative permeabilities are
+\begin{align}
+p_c &= p_b S_{w,e}^{-1/\lambda_{\mathrm{BC}}},
+\label{eq:si-bc-pc}\\
+k_{r,w} &= S_{w,e}^{3+2/\lambda_{\mathrm{BC}}},
+\label{eq:si-bc-krw}\\
+k_{r,g} &= (1-S_{w,e})^2
+\left(1-S_{w,e}^{1+2/\lambda_{\mathrm{BC}}}\right).
+\label{eq:si-bc-krg}
+\end{align}
+Outside the physical interval, the numerical implementation regularizes or
+clamps effective saturation as required by the nonlinear solver.
+
+Liquid density, viscosity, enthalpy, and binary diffusion coefficients depend
+on pressure, temperature, and composition through the DuMu$^{\mathrm{X}}$
+brine--gas property package \cite{koch2021}. This salinity dependence is
+essential because the density contrast is the modeled source of gravitational
+instability. The liquid NaCl binary diffusivity retains the base property-model
+value; no concentration-dependent hydrodynamic dispersion coefficient was
+fitted in the simulations reported here.
+
+The water activity is calculated from NaCl molality,
+\begin{equation}
+m_{\mathrm{NaCl}}
+=\frac{x_w^{\mathrm{NaCl}}}{M^w x_w^w},
+\label{eq:si-molality}
+\end{equation}
+where $M^w$ is the molar mass of water. The Pitzer-type osmotic coefficient
+used in the archived implementation is \cite{Pitzer1973}
+\begin{equation}
+\phi_{\mathrm{osm}}(m)=
+1-\frac{0.3915\sqrt{m}}{1+1.2\sqrt{m}}
++m\left(0.0765+0.2664\exp[-2\sqrt{m}]\right)
++0.00127m^2,
+\label{eq:si-osmotic-coefficient}
+\end{equation}
+and
+\begin{equation}
+a_w=\exp\left[-2m_{\mathrm{NaCl}}M^w
+\phi_{\mathrm{osm}}(m_{\mathrm{NaCl}})\right].
+\label{eq:si-water-activity}
+\end{equation}
+The parameterization is evaluated at 293.15~K as a near-room-temperature
+approximation; it is not fitted to the present evaporation experiment.
+
+The solubility limit is the liquid NaCl mass fraction
+$X_{w,\mathrm{max}}^{\mathrm{NaCl}}=0.26$. The corresponding saturation
+molality is
+\begin{equation}
+m_{\mathrm{sat}}
+=\frac{X_{w,\mathrm{max}}^{\mathrm{NaCl}}}
+{M^{\mathrm{NaCl}}\left(1-X_{w,\mathrm{max}}^{\mathrm{NaCl}}\right)}
+=6.012~\mathrm{mol\,kg^{-1}},
+\label{eq:si-saturation-molality}
+\end{equation}
+where the value is rounded. Equilibrium precipitation and dissolution are
+enforced through
+\begin{equation}
+c_{\mathrm{solid}}^{\mathrm{NaCl}}\geq0,
+\qquad
+g_{\mathrm{sat}}\geq0,
+\qquad
+c_{\mathrm{solid}}^{\mathrm{NaCl}}g_{\mathrm{sat}}=0,
+\label{eq:si-complementarity}
+\end{equation}
+with
+\begin{equation}
+g_{\mathrm{sat}}=
+\phi S_w\rho_{\mathrm{mol},w}
+\left(m_{\mathrm{sat}}M^w x_w^w-x_w^{\mathrm{NaCl}}\right).
+\label{eq:si-saturation-gap}
+\end{equation}
+This closure permits solid NaCl only when the dissolved phase is at saturation,
+and permits undersaturation only when the solid inventory is zero.
+
+Precipitated salt is stored as an immobile conserved inventory. In the
+external-crust extension used in the manuscript, the inventory associated with
+an atmospheric upper-boundary cell is interpreted as external salt exactly
+once and is used to calculate an equivalent vapor resistance. It is not copied
+to a second precipitation store. The underlying sand retains fixed $\phi$, $K$,
+and retention functions, and no explicit crust-domain liquid flow is solved.
+The numerical onset of a positive equilibrium solid inventory is therefore not
+a prediction of nucleation time or crystal morphology.
+
+\sitext{Initial and boundary conditions}\label{app:boundary}
+
+\sisub{Upper evaporation boundary}
+
+The water mass flux across the gas film is
+\begin{equation}
+j_{\mathrm{evap}}=
+\frac{\rho_{g,f}D_g^{w,\mathrm{N_2}}}{\delta_g}
+\left(X_{g,s}^{w,\mathrm{eq}}-X_{g,\mathrm{amb}}^w\right),
+\label{eq:si-film-flux}
+\end{equation}
+where the gas properties are evaluated at representative film conditions and
+$\delta_g$ is an effective film thickness. The equilibrium interfacial mole
+fraction is
+\begin{equation}
+x_{g,s}^{w,\mathrm{eq}}
+=\frac{a_w p_{\mathrm{sat}}(T_s)}{p_{\mathrm{atm}}},
+\label{eq:si-vapor-equilibrium}
+\end{equation}
+and its corresponding mass fraction is
+\begin{equation}
+X_{g,s}^{w,\mathrm{eq}}=
+\frac{M^w x_{g,s}^{w,\mathrm{eq}}}
+{M^w x_{g,s}^{w,\mathrm{eq}}+
+M^{\mathrm{N_2}}\left(1-x_{g,s}^{w,\mathrm{eq}}\right)}.
+\label{eq:si-mole-to-mass}
+\end{equation}
+Dry nitrogen is represented by $X_{g,\mathrm{amb}}^w=0$. The signed form of
+Equation~\ref{eq:si-film-flux} permits condensation in principle, although it
+does not occur under the prescribed dry-gas condition.
+
+For an upper boundary face, conserved external NaCl mass $M_{\mathrm{cr}}$ is
+converted to an equivalent porous-crust thickness,
+\begin{equation}
+h_{\mathrm{cr}}=
+\frac{M_{\mathrm{cr}}}
+{\rho_{\mathrm{cr}}(1-\varepsilon_{\mathrm{cr}})A},
+\label{eq:si-crust-thickness}
+\end{equation}
+where $\rho_{\mathrm{cr}}$ is crystal density,
+$\varepsilon_{\mathrm{cr}}$ is assumed crust porosity, and $A$ is the native
+boundary-face area. Series diffusion through the gas film and equivalent crust
+then gives
+\begin{equation}
+j_{\mathrm{evap,cr}}=
+\frac{j_{\mathrm{evap}}}
+{1+\displaystyle\frac{h_{\mathrm{cr}}D_g^{w,\mathrm{N_2}}}
+{\delta_gD_{\mathrm{cr}}^w}}.
+\label{eq:si-crust-flux}
+\end{equation}
+The exploratory coupled case uses $\rho_{\mathrm{cr}}=2165~\mathrm{kg\,m^{-3}}$,
+$\varepsilon_{\mathrm{cr}}=0.43$, complete within-face coverage, and
+$D_{\mathrm{cr}}^w/D_g^{w,\mathrm{N_2}}=0.08$. These values are conditional
+assumptions, not independently measured properties of the observed moist
+efflorescence. Additional crust thermal resistance and explicit hydraulic
+transport inside the external salt layer are excluded.
+
+The upper energy flux combines water-vapor enthalpy, carrier-gas enthalpy, and
+gas-film conduction:
+\begin{equation}
+j_{\mathrm{E},s}=
+h_g^w j_{\mathrm{evap}}
++h_g^{\mathrm{N_2}}j_g^{\mathrm{N_2}}
++\frac{\lambda_g}{\delta_g}(T_s-T_{\mathrm{amb}}).
+\label{eq:si-top-energy}
+\end{equation}
+The same effective thickness is used for mass and heat transfer.
+
+\sisub{Reservoir connection and external walls}
+
+The reservoir pressure at boundary elevation $z_b$ is
+\begin{equation}
+p_{w,\mathrm{res}}(z_b)=p_{\mathrm{atm}}
++\rho_{w,\mathrm{res}}g(z_{\mathrm{res}}-z_b),
+\label{eq:si-reservoir-pressure}
+\end{equation}
+where $z_{\mathrm{res}}$ is 20~mm above the sand--filter interface. The central
+inlet exchanges liquid with the explicitly resolved filter according to the
+hydraulic-potential difference between the reservoir and the adjacent filter
+cell. Denoting boundary transmissibility by $\mathcal{T}_b$,
+\begin{equation}
+q_{V,b}=-\mathcal{T}_b
+\left(\Psi_{w,b}-\Psi_{w,\mathrm{res}}\right).
+\label{eq:si-bottom-flux}
+\end{equation}
+The sign determines the upstream state used for component fractions and
+enthalpy; both inflow and return flow are admitted. No second Robin-type filter
+resistance is applied in addition to the explicit filter.
+
+All other external boundaries are impermeable to fluid and components. Heat
+exchange through the cylindrical and bottom holder walls is
+\begin{equation}
+j_{\mathrm{E},\mathrm{wall}}=
+\frac{\lambda_{\mathrm{wall}}}{d_{\mathrm{wall}}}
+(T-T_{\mathrm{amb}}),
+\label{eq:si-wall-heat}
+\end{equation}
+using $\lambda_{\mathrm{wall}}=0.184~\mathrm{W\,m^{-1}\,K^{-1}}$ and
+$d_{\mathrm{wall}}=5~\mathrm{mm}$.
+
+\sisub{Initial state and pre-equilibration}
+
+The domain is initialized fully saturated with 1~mol~L$^{-1}$ NaCl solution at
+293.15~K. Before evaporation, the numerical column is pre-equilibrated for 2~h
+with the gas-film water flux inactive. Reported simulation time $t=0$
+corresponds to the start of evaporation. Geometry and boundary parameters are
+summarized in Table~\ref{tab:si-domain}; material parameters are listed in
+Table~\ref{tab:si-materials}.
+
+\verify{The main article currently states that $\delta_g$ was calibrated using
+only the first 24~h, whereas archived provenance for the selected
+$\delta_g=8.100162$~mm value documents a full 174-h evaporation calibration.
+The calibration window and the status of 24--174~h as independent validation
+must be reconciled before submission.}
+
+\sitext{MRI acquisition, calibration, processing, and uncertainty}
+\label{app:mri}
+
+The \NaIso{} and \HIso{} acquisition parameters are reproduced in
+Table~\ref{tab:si-mri}. After the initial \NaIso{} scan, the schedule was
+$8\times30$~min, $2\times60$~min, $3\times120$~min, and
+$27\times360$~min, for a total experiment duration of 174~h. Each image is
+assigned its nominal acquisition time. The finite 32-min \NaIso{} acquisition
+window is not a point measurement and should be considered when interpreting
+rapid early-time redistribution.
+
+For calibration, homogeneous F36 and W3 packings were saturated with 0, 1, 2,
+3, 4, and 5~mol~L$^{-1}$ solutions and scanned using the same protocol. The
+Na volume concentration is
+\begin{equation}
+c_{\mathrm{vol}}^{\mathrm{Na}}
+=\frac{n^{\mathrm{Na}}}{V_{\mathrm{bulk}}}
+=c_{\mathrm{sol}}^{\mathrm{Na}}\theta_{\mathrm{vol}},
+\label{eq:si-mri-calibration}
+\end{equation}
+where $n^{\mathrm{Na}}$ is the amount of Na, $V_{\mathrm{bulk}}$ is bulk
+volume, $c_{\mathrm{sol}}^{\mathrm{Na}}$ is solution concentration, and
+$\theta_{\mathrm{vol}}$ is volumetric water content. A linear response was used
+for F36 and a second-order response for W3:
+\begin{align}
+c_{\mathrm{vol,F36}}^{\mathrm{Na}} &=
+a_{\mathrm{F36}}S_r+b_{\mathrm{F36}},
+\label{eq:si-f36-calibration}\\
+c_{\mathrm{vol,W3}}^{\mathrm{Na}} &=
+a_{\mathrm{W3}}S_r^2+b_{\mathrm{W3}}S_r+d_{\mathrm{W3}},
+\label{eq:si-w3-calibration}
+\end{align}
+where $S_r$ is the processed relative voxel signal.
+
+\verify{Insert the fitted coefficients, their units, fit residuals, and the
+number of independent calibration samples for
+Equations~\ref{eq:si-f36-calibration} and \ref{eq:si-w3-calibration}. A plot
+alone is insufficient for reproducibility.}
+
+Raw k-space data were reconstructed by inverse Fourier transformation in
+Paravision~6. Subsequent processing in ImageJ~1.53t used common display scaling,
+a 1.5-pixel median filter, and the volume-viewer plugin for transparent 3-D
+renderings. A spike artifact within the sample region was suppressed for the
+3-D visualization by filtering high voxel values. Quantitative profiles must be
+distinguished from display-only brightness scaling and artifact suppression.
+
+The standard deviations obtained by back-calculating the six calibration
+solutions were 0.11, 0.26, 0.35, 0.42, 0.51, and
+0.63~mol~L$^{-1}$ for F36, and 0.13, 0.28, 0.29, 0.54, 0.67, and
+0.63~mol~L$^{-1}$ for W3. These correspond to mean relative errors of about
+14\% for F36 and about 15\% for W3 at the higher concentrations; relative error
+is larger near zero concentration. These voxel variations quantify repeatability
+within the calibration images under the adopted processing, not a complete
+voxelwise confidence interval. They exclude fitted-coefficient uncertainty,
+finite acquisition time, spatial registration, interface partial volumes,
+undetected precipitated NaCl, and possible supersaturation beyond the
+calibration range.
+
+The \HIso{} data were normalized to the initial scan using an initial
+volumetric water content of 0.38 because a separate marker tube could not be
+accommodated. The \HIso{} series is therefore best interpreted as a relative
+check on water-content changes, not as an independently calibrated absolute
+water-content measurement at every voxel.
+
+\sitext{Comparison quantities and numerical verification status}
+\label{app:verification}
+
+For subdomain $\Omega_i$ (F36, W3, or the complete sample), the amount of
+MRI-visible dissolved sodium is
+\begin{equation}
+n_{\Omega_i}^{\mathrm{Na}}(t)=
+\int_{\Omega_i}c_{\mathrm{vol}}^{\mathrm{Na}}(\boldsymbol{x},t)
+\,\mathrm{d}V.
+\label{eq:si-integrated-na}
+\end{equation}
+The simulated dissolved NaCl field is converted to the corresponding Na amount
+before comparison. Simulated solid NaCl is excluded because \NaIso-MRI does not
+detect the solid inventory.
+
+Let $\Gamma_{\mathrm{FW}}$ denote the vertical interface with unit normal from
+F36 to W3. The conservative NaCl transfer rate is
+\begin{equation}
+\dot n_{\mathrm{FW}}^{\mathrm{NaCl}}=
+\int_{\Gamma_{\mathrm{FW}}}
+\left(
+\rho_{\mathrm{mol},w}x_w^{\mathrm{NaCl}}\boldsymbol{v}_w
++\boldsymbol{J}_w^{\mathrm{NaCl}}
+\right)\!\cdot\boldsymbol{n}_{\mathrm{FW}}\,\mathrm{d}A,
+\label{eq:si-interface-flux}
+\end{equation}
+with the two terms reported separately as advective and diffusive contributions.
+Positive values indicate net transfer from F36 to W3.
+
+For $N$ matched profile values, concentration error is
+\begin{equation}
+\mathrm{RMSE}_c=
+\left[
+\frac{1}{N}\sum_{i=1}^{N}
+\left(c_{\mathrm{sim},i}^{\mathrm{Na}}-
+c_{\mathrm{MRI},i}^{\mathrm{Na}}\right)^2
+\right]^{1/2}.
+\label{eq:si-rmse}
+\end{equation}
+RMSE is reported separately for F36 and W3 because pooling both halves can mask
+opposite biases. The sampling volume, depth interval, spatial averaging, and
+nominal acquisition time must accompany every value.
+
+Discrete conservation is checked from accepted time steps. For component
+$\kappa$, the cumulative residual is
+\begin{equation}
+r^\kappa(t)=N^\kappa(t)-N^\kappa(0)
++\int_0^t\dot N_{\partial\Omega}^\kappa(\tau)\,\mathrm{d}\tau,
+\label{eq:si-budget-residual}
+\end{equation}
+where outward boundary flow is positive. The selected 8.100-mm film case
+completed 2~h pre-equilibration plus 174~h evaporation. Its maximum relative
+water, salt, and material budget residuals were of order $10^{-12}$; the maximum
+relative energy residual was $1.64\times10^{-10}$. These values establish
+internal numerical accounting, not physical validity.
+
+The fixed-geometry case without additional crust resistance predicted reservoir
+solution loss of 52.4057~g compared with 51.52~g measured, an endpoint
+difference of +1.72\%. This did not meet the pre-registered 1\% endpoint
+tolerance. The exploratory coupled external-crust case predicted 51.5403~g
+(+0.0395\% at 174~h), but this close terminal match does not independently
+validate the crust mechanism because the crust properties and mapping are
+assumed and the gas-film thickness was already calibrated. Short hydrostatic, boundary-transport,
+conservation, sparse-output, and thread-equivalence gates passed. However, a
+targeted radial refinement of the approximately 4-mm inlet and a complete
+production-scale grid/time-step convergence study remain unresolved. The inlet
+spans only about 1.6 maximum bottom-face equivalent diameters in the current
+mesh. Only saturated filter permeability is measured; filter porosity,
+retention, relative permeability, and thermal properties remain provisional.
+Table~\ref{tab:si-verification} separates passed checks from open limitations.
+
+\verify{Do not describe the model as \emph{validated} until the gas-film
+calibration window is reconciled and an independent prediction interval is
+defined. Numerical closure, thread equivalence, and completion to 174~h do not
+substitute for grid convergence or independent experimental validation.}
+
+\begingroup
+\jdraftfalse
+\normalsize
+\bibliography{literature}
+\endgroup
+
+\end{article}
+\clearpage
+
+\begin{table}
+\settablenum{S1}
+\caption{Principal geometry, initial conditions, and boundary parameters.}
+\label{tab:si-domain}
+\centering
+\begin{tabular}{p{0.47\textwidth}p{0.23\textwidth}p{0.22\textwidth}}
+\toprule
+Quantity & Value & Status \\
+\midrule
+Sand-column inner diameter & 50~mm & experimental geometry \\
+Sand height & 40~mm & experimental geometry \\
+Porous-filter thickness & 4.5~mm & experimental geometry \\
+Filter saturated permeability & $5.30\times10^{-12}$~m$^2$ & measured mean \\
+Central inlet diameter & approximately 4~mm & approximate geometry \\
+Reservoir level above sand--filter interface & 20~mm & experimental setting \\
+Initial/reservoir NaCl concentration & 1~mol~L$^{-1}$ & experimental setting \\
+Initial, reservoir, and ambient temperature & 293.15~K & prescribed \\
+Atmospheric pressure & $1.00\times10^5$~Pa & prescribed \\
+Ambient relative humidity & 0 & dry-gas assumption \\
+Effective gas-film thickness $\delta_g$ & 8.100162~mm & calibration window to reconcile \\
+Numerical pre-equilibration & 2~h & evaporation inactive \\
+Maximum time-step size & 300~s & numerical control \\
+Wall conductivity $\lambda_{\mathrm{wall}}$ & 0.184~W~m$^{-1}$~K$^{-1}$ & prescribed \\
+Wall thickness $d_{\mathrm{wall}}$ & 5~mm & prescribed \\
+NaCl solubility mass fraction $X_{w,\mathrm{max}}^{\mathrm{NaCl}}$ & 0.26 & equilibrium closure \\
+Crust crystal density $\rho_{\mathrm{cr}}$ & 2165~kg~m$^{-3}$ & assumed \\
+Equivalent-crust porosity $\varepsilon_{\mathrm{cr}}$ & 0.43 & assumed \\
+Crust/gas diffusivity ratio & 0.08 & sensitivity choice \\
+Within-face crust coverage & 1 & assumed complete coverage \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+\settablenum{S2}
+\caption{Hydraulic material parameters used for F36 and W3. The distinction
+between reported saturated water content and computational porosity is retained.}
+\label{tab:si-materials}
+\centering
+\begin{tabular}{p{0.47\textwidth}cc}
+\toprule
+Quantity & F36 & W3 \\
+\midrule
+Mean particle size ($\mu$m) & 160 & 90 \\
+Particle-size range ($\mu$m) & 90--355 & 2--400 \\
+Intrinsic permeability $K$ (m$^2$) & $7.83\times10^{-12}$ & $3.20\times10^{-14}$ \\
+Reported saturated water content $\theta_{\mathrm{sat}}$ & 0.39 & 0.31 \\
+Reported residual water content $\theta_{\mathrm{res}}$ & 0.02 & 0.08 \\
+Computational porosity $\phi$ & 0.40 & 0.36 \\
+Computational residual saturation $S_{w,r}$ & 0.05 & 0.22 \\
+Residual gas saturation $S_{g,r}$ & 0 & 0 \\
+Entry pressure $p_b$ (Pa) & $4.69\times10^3$ & $1.12\times10^4$ \\
+Brooks--Corey exponent $\lambda_{\mathrm{BC}}$ & 5.04 & 0.384 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1ex}
+\noindent\textcolor{red}{\textbf{Author query---}The main article reports
+$\theta_{\mathrm{sat}}=0.39/0.31$, while current computational inputs use
+$\phi=0.40/0.36$. Confirm the provenance and interpretation of both pairs,
+especially W3, rather than treating them as interchangeable.}
+\end{table}
+
+\begin{table}
+\settablenum{S3}
+\caption{MRI acquisition parameters used during the heterogeneous experiment.}
+\label{tab:si-mri}
+\centering
+\begin{tabular}{lcc}
+\toprule
+Parameter & \NaIso{} imaging & \HIso{} imaging \\
+\midrule
+Pulse sequence & 3DSE & MSME \\
+$t_R$ (ms) & 300 & 3000 \\
+$t_E$ (ms) & 4.6 & 4 \\
+Slices & 1 & 40 \\
+Slice thickness (mm) & 55 & 1 \\
+Number of averages & 4 & 4 \\
+Scan time (min) & 32 & 51 \\
+Matrix size & $64\times40\times40$ & $256\times256\times1$ \\
+Resolution (mm) & $1\times1.375\times1.375$ & $0.25\times0.25\times0.25$ \\
+Bandwidth (kHz) & 50 & 150 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+\settablenum{S4}
+\caption{Status of numerical checks and remaining evidence limitations for the
+selected 8.100-mm gas-film baseline and the exploratory external-crust extension.}
+\label{tab:si-verification}
+\centering
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\textwidth}
+                >{\raggedright\arraybackslash}p{0.25\textwidth}
+                >{\raggedright\arraybackslash}p{0.39\textwidth}}
+\toprule
+Check & Status & Interpretation \\
+\midrule
+174-h completion & passed & Solver completion only; not model validation \\
+Water/salt/material budgets & residuals $\sim10^{-12}$ & Conservative accounting on accepted steps \\
+Energy budget & residual $1.64\times10^{-10}$ & Internal energy accounting \\
+Hydrostatic and bidirectional boundary tests & passed & Implementation consistency \\
+Thread equivalence (1/2/4/8 threads) & passed for registered benchmark & Reproducibility of tested configuration \\
+Reservoir-loss endpoint & +1.72\% error & Did not meet pre-registered 1\% tolerance \\
+External-crust endpoint & +0.0395\% error & Close fit is conditional, not mechanism validation \\
+Gas-film identification & unresolved provenance & First-24-h and full-window claims conflict \\
+Local inlet radial refinement & open & Current aperture is locally under-resolved \\
+Production grid/time-step convergence & open & No general convergence claim is supported \\
+Filter unsaturated/thermal properties & provisional & Saturated permeability alone is measured \\
+Sand geometry feedback & excluded & Porosity and permeability remain fixed \\
+Explicit crust hydraulics/thermal resistance & excluded & Only vapor resistance is represented \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
+
+
+
+
+

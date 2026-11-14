@@ -422,7 +422,7 @@ dependence of liquid density and viscosity on salt concentration is taken into
 account, allowing gravitational instabilities to develop as the pore water
 becomes enriched in salt. Capillary pressure and relative permeability are
 described using the Brooks--Corey relationships. The governing equations and
-constitutive relations are provided in Supporting Information Section~S1.
+constitutive relations are provided in Text~S1 of the Supporting Information.
 
 The numerical domain was extended from the two-dimensional homogeneous
 configurations of \citeA{chaudhry2026} to the three-dimensional heterogeneous
@@ -446,93 +446,157 @@ central inlet boundary with a nominal diameter of 4~mm.}
 \label{fig:numerical-model}
 \end{figure}
 
-\subsubsection{Evaporation and equilibrium salt precipitation}
+\subsubsection{Evaporation and salt precipitation}
 
 Evaporation at the upper boundary was described using a gas-film mass-transfer
-approach \cite{mosthaf2014,vanderborght2017,fetzer2017}. Instead of prescribing a
-constant evaporative flux, the water mass flux was determined from the
-difference between the equilibrium water-vapor mass fraction at the
-porous-medium surface and that in the ambient gas:
+approach \cite{mosthaf2014,vanderborght2017,fetzer2017}, in which the evaporative
+water flux depends on the local thermodynamic state of the saline solution and
+the ambient vapor concentration. The water mass flux in the absence of an
+external salt crust is given by
 \begin{equation}
-j_{\mathrm{evap}} =
+j_{\mathrm{evap}}^{(0)} =
 \frac{\rho_{g,f}D_g^{w,\mathrm{N_2}}}{\delta_g}
 \left(X_{g,s}^{w,\mathrm{eq}}-X_{g,\mathrm{amb}}^{w}\right),
 \label{eq:gas-film-flux}
 \end{equation}
 where $\rho_{g,f}$ and $D_g^{w,\mathrm{N_2}}$ denote the gas density and the
 water-vapor--nitrogen binary diffusion coefficient evaluated at representative
-gas-film conditions, respectively. The parameter $\delta_g$ is the effective
-gas-film thickness. The equilibrium water-vapor composition was calculated from
-the local surface temperature and the water activity of the saline solution:
+gas-film conditions, respectively, and $\delta_g$ is the effective gas-film
+thickness. The equilibrium vapor
+composition at the porous-medium surface was determined from the local
+temperature and water activity of the saline solution:
 \begin{equation}
 x_{g,s}^{w,\mathrm{eq}} =
-\frac{a_w p_{\mathrm{sat}}(T_s)}{p_{\mathrm{atm}}},
+\frac{a_w(m)\,p_{\mathrm{sat}}(T_s)}{p_{\mathrm{atm}}},
 \label{eq:surface-vapor-equilibrium}
 \end{equation}
-where $a_w$ is the water activity, $p_{\mathrm{sat}}$ is the saturation vapor
-pressure of pure water, $T_s$ is the local surface temperature and
-$p_{\mathrm{atm}}$ is the atmospheric pressure. The equilibrium vapor mass
-fraction $X_{g,s}^{w,\mathrm{eq}}$ in Equation~\ref{eq:gas-film-flux} was
-obtained from the corresponding mole fraction
+where $m$ is the NaCl molality, $a_w(m)$ is the corresponding water activity,
+$p_{\mathrm{sat}}$ is the saturation vapor pressure of pure water, $T_s$ is the
+local surface temperature and $p_{\mathrm{atm}}$ is the atmospheric pressure.
+The vapor mass fraction $X_{g,s}^{w,\mathrm{eq}}$ in
+Equation~\ref{eq:gas-film-flux} was obtained from the equilibrium mole fraction
 $x_{g,s}^{w,\mathrm{eq}}$ in
 Equation~\ref{eq:surface-vapor-equilibrium}.
 
-The water activity of the NaCl solution was described using a Pitzer-based
-osmotic-coefficient formulation. The resulting reduction in equilibrium vapor
-pressure with increasing salinity was therefore directly incorporated into the
-evaporative boundary condition. A relative humidity of zero was prescribed on
-the gas side to represent the dry nitrogen flow used in the experiment. The
-effective gas-film thickness was calibrated against the reservoir mass-loss
-measurements during the first 24~h of evaporation
-(Section~\ref{sec:model-calibration}). Heat exchange associated with evaporation
-was accounted for through the non-isothermal formulation, including enthalpy
-transport and conductive heat transfer across the gas film.
+The water activity was calculated using a Pitzer-based osmotic-coefficient
+formulation for aqueous NaCl. Consequently, salt enrichment reduces the
+equilibrium vapor pressure and modifies the local evaporative driving force. A
+relative humidity of zero was prescribed on the gas side to represent the dry
+nitrogen flow used in the experiment. The effective gas-film thickness was
+calibrated against the reservoir mass-loss measurements during the first 24~h
+of evaporation (Section~\ref{sec:model-calibration}). Heat exchange associated
+with evaporation was represented by the non-isothermal formulation, including
+enthalpy transport and conductive heat transfer across the gas film.
 
-Since NaCl is nonvolatile, evaporation removes water from the porous medium while
-dissolved salt is retained. Salt accumulation increases the liquid-phase
-concentration until the solubility limit is reached, at which point NaCl
-precipitation is assumed to occur at local chemical equilibrium. The solubility
-limit was specified by a NaCl mass fraction of 0.26. The dissolved and
-precipitated salt inventories were included in the total NaCl mass balance,
-ensuring conservation during precipitation and dissolution. Precipitation
-modifies the dissolved salt concentration and thereby affects the local water
-activity and evaporative driving force.
+Since NaCl is nonvolatile, evaporation leads to the accumulation of dissolved
+salt within the porous medium. Salt precipitation and dissolution were
+described assuming local thermodynamic equilibrium, with the NaCl solubility
+limit corresponding to a mass fraction of 0.26. Both dissolved and precipitated
+NaCl were included in the total salt mass balance. Precipitation therefore
+constrains the dissolved salt concentration and its associated water activity
+once the solubility limit is reached.
 
-The MRI observations indicate the development of a moist salt structure above
-the W3 surface during the experiment, consistent with efflorescence formation.
-In the numerical model, however, precipitated salt is represented by a local
-solid inventory within the fixed computational domain. Changes in pore geometry,
-porosity and intrinsic permeability due to precipitation are neglected, and the
-growth of an external porous salt crust is not explicitly resolved. Accordingly,
-the model accounts for the thermodynamic coupling between evaporation and salt
-precipitation but does not include additional mass-transfer resistance or
-changes in evaporating surface area associated with efflorescence growth.
+To account for the potential influence of surface salt deposition on
+evaporation, an additional vapor-transfer resistance was introduced in the
+external-crust model. The precipitated NaCl inventory associated with each upper
+boundary cell was assigned to an equivalent porous salt layer, whose thickness
+was determined from mass conservation:
+\begin{equation}
+h_{\mathrm{cr}} =
+\frac{M_{\mathrm{cr}}}
+{\rho_{\mathrm{cr}}(1-\varepsilon_{\mathrm{cr}})A},
+\label{eq:crust-thickness}
+\end{equation}
+where $M_{\mathrm{cr}}$ is the local external salt mass,
+$\rho_{\mathrm{cr}}$ is the crystal density, $\varepsilon_{\mathrm{cr}}$ is the
+assumed crust porosity and $A$ is the corresponding surface area. Assuming
+one-dimensional vapor diffusion through the equivalent salt layer and the
+overlying gas film, the corrected evaporative flux for complete surface
+coverage becomes
+\begin{equation}
+j_{\mathrm{evap}} =
+\frac{j_{\mathrm{evap}}^{(0)}}
+{1+\displaystyle\frac{h_{\mathrm{cr}}D_g^{w,\mathrm{N_2}}}
+{\delta_g D_{\mathrm{cr}}}},
+\label{eq:crust-corrected-flux}
+\end{equation}
+where $D_{\mathrm{cr}}$ represents the effective water-vapor diffusivity through
+the porous salt layer. Equation~\ref{eq:crust-corrected-flux} reduces to the
+original gas-film formulation when no external salt is present. The local solid
+inventory, equivalent crust thickness and evaporative flux were updated within
+the coupled numerical solution.
+
+The experimental observations indicate the development of a moist
+efflorescent structure above the W3 surface. The numerical representation
+approximates this structure as an equivalent vapor-diffusion resistance rather
+than explicitly resolving its geometry, hydraulic connectivity or internal
+liquid transport. Precipitation-induced changes in the hydraulic properties of
+the underlying sand and additional thermal resistance within the salt crust
+were neglected. The external-crust formulation therefore represents a
+conditional approximation of the feedback between salt deposition and
+evaporation, rather than a fully resolved efflorescence growth model.
 
 \subsubsection{Bottom boundary and saline-water supply}
 
-To represent the continuous supply of saline water during evaporation, the
-bottom boundary was coupled to an external reservoir through an explicitly
-resolved porous filter. The filter has a thickness of 4.5~mm and an intrinsic
-permeability of $5.30\times10^{-12}$~m$^2$. The connection to the reservoir is
-represented by a centrally located circular inlet with a nominal diameter of
-4~mm (Figure~\ref{fig:numerical-model}). The reservoir water level was
-maintained 20~mm above the sand--filter interface, and the reservoir
-concentration and temperature were prescribed as 1~mol~L$^{-1}$ NaCl and
-293.15~K, respectively.
+The lower boundary was represented by a hydraulic connection between the porous
+medium and an external saline-water reservoir. To reproduce the experimental
+configuration, a 4.5-mm-thick porous filter was explicitly included beneath the
+sand packing (Figure~\ref{fig:numerical-model}). The filter permeability was set
+to $5.30\times10^{-12}$~m$^2$, based on experimental measurements. Liquid
+exchange with the reservoir was restricted to a central circular region on the
+underside of the filter, corresponding to a nominal inlet diameter of 4~mm.
 
-Liquid exchange at the inlet was determined from the hydraulic-potential
-difference between the reservoir and the adjacent filter, accounting for liquid
-mobility and the effective inlet area. The boundary formulation permits both
-inflow from the reservoir and return flow toward the reservoir. Component and
-energy transport associated with this exchange were evaluated using the
-properties of the upstream fluid.
+The liquid pressure imposed by the reservoir at the inlet elevation was
+determined from the hydrostatic pressure distribution:
+\begin{equation}
+p_R(z_b) = p_{\mathrm{atm}} + \rho_R g(z_R-z_b),
+\label{eq:reservoir-pressure}
+\end{equation}
+where $p_R$ is the reservoir pressure at the lower boundary elevation $z_b$,
+$\rho_R$ is the density of the reservoir solution and $z_R$ is the reservoir
+water level, maintained 20~mm above the sand--filter interface.
 
-The liquid and salt fluxes entering F36 and W3 were therefore not prescribed
-independently but resulted from the coupled flow and transport equations. The
-shared porous filter also provides a hydraulic connection between the two
-materials beneath the sand packing. Explicit representation of this connection
-allows changes in the partitioning of bottom water and salt supply to be
-distinguished from direct transport across the vertical material interface.
+Rather than prescribing a constant liquid flux or directly fixing the pressure
+of the adjacent computational cells, liquid exchange at the inlet was
+calculated from the hydraulic-potential difference between the reservoir and the
+filter. The outward-normal liquid Darcy flux across each boundary face was
+evaluated as
+\begin{equation}
+q_{l,b} =
+f_b\frac{k_f k_{rl,c}}{\mu_{\mathrm{up}}\Delta z}
+\left[
+p_{l,c}-p_R(z_b)+\bar{\rho}_l g\Delta z
+\right],
+\label{eq:bottom-darcy-flux}
+\end{equation}
+where $f_b$ is the fraction of the boundary face intersecting the inlet, $k_f$
+is the intrinsic permeability of the filter, $k_{rl,c}$ is the liquid relative
+permeability in the adjacent filter cell, $\mu_{\mathrm{up}}$ is the viscosity
+evaluated from the upstream fluid state and $\Delta z$ denotes the distance
+between the cell center and the boundary face. The density $\bar{\rho}_l$ is
+evaluated as the arithmetic mean of the reservoir and adjacent-cell liquid
+densities. Positive fluxes denote flow from the filter toward the reservoir,
+whereas negative fluxes indicate liquid supply from the reservoir.
+
+The hydraulic resistance of the filter was resolved explicitly within the
+computational domain. Consequently, no additional filter resistance was imposed
+at the reservoir boundary. The circular inlet was mapped onto the computational
+mesh using the overlap area between the inlet and individual boundary faces,
+thereby preserving the nominal inlet area.
+
+The reservoir NaCl concentration and temperature were maintained at
+1~mol~L$^{-1}$ and 293.15~K, respectively. Water, dissolved components and
+enthalpy were transported across the inlet according to the direction of flow,
+using the reservoir properties for inflow and the adjacent filter-cell
+properties for return flow. The remaining lower boundary was impermeable to
+fluid components, while conductive heat exchange through the holder was
+retained.
+
+This formulation allows the water and salt supply to the F36 and W3 regions to
+evolve in response to the coupled hydraulic and concentration fields. In
+particular, the shared filter provides a hydraulic connection beneath the
+vertical material interface. Therefore, changes in direct interdomain transport
+can also affect the partitioning of bottom supply between the two materials.
 
 \subsection{Model calibration and validation} \label{sec:model-calibration}
 
